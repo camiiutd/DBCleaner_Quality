@@ -1,6 +1,6 @@
-# README — DATA QUALITY ANALYZER
-LINK: https://dbcleanerquality.streamlit.app/
-A web-based tool that automates the cleaning and preprocessing of your database.
+# LINK: https://dbcleanerquality.streamlit.app/
+# DATA QUALITY ANALYZER
+A web-based tool that automates the cleaning and preprocessing of your .csv database.
 
 This tool helps you:
 - Identify missing values, duplicates, and outliers
