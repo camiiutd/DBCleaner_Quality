@@ -40,27 +40,27 @@ def clean_dataframe(df, remove_unknowns=True, custom_remove_list=None):
 
 def valores_eliminados(df_original, df_clean, remove_unknowns=True, custom_remove_list=None):
 
-    # normalizamos
+    #normalizamos
     df_o_norm = df_original.applymap(normalizar_valor)
     df_c_norm = df_clean.applymap(normalizar_valor)
 
     originales = set(df_o_norm.values.flatten())
     finales = set(df_c_norm.values.flatten())
 
-    # lista unknowns
+    #lista unknowns
     base_unknowns = []
     if remove_unknowns:
         base_unknowns = ["unknown", "n/a", "na"]
 
-    # lista custom
+    #lista custom
     custom_list = [normalizar_valor(v) for v in custom_remove_list] if custom_remove_list else []
 
     valores_a_buscar = set(base_unknowns + custom_list)
 
-    # qué desapareció
+    #que desaparecio
     desaparecidos = originales - finales
 
-    # devolver SOLO los valores que estaban en lo que el usuario quería eliminar
+    #devolver los valores que estaban en lo que el usuario quería eliminar
     eliminados = {v for v in desaparecidos if v in valores_a_buscar}
 
     return eliminados
@@ -68,7 +68,6 @@ def valores_eliminados(df_original, df_clean, remove_unknowns=True, custom_remov
 
 
 def count_outliers(series):
-    """Cuenta outliers usando el método del IQR."""
     if not pd.api.types.is_numeric_dtype(series):
         return 0
     
@@ -94,7 +93,7 @@ def data_quality_report(df, removed_rows, removed_duplicates):
     score = (
         100
         - report["null_%"].fillna(0)
-        - report["outliers"].fillna(0) * 0.5
+        - report["outliers"].fillna(0)* 0.5
     )
 
     report["quality_score"] = score.clip(0, 100)
