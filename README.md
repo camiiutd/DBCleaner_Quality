@@ -8,7 +8,7 @@ This tool helps you:
 - Remove user-specified custom values
 - Automatically convert columns to numeric when appropriate
 - Download both the cleaned dataset and the quality report
-- Preview the cleaned dataset ready for BI tools like Tableau
+- Preview the cleaned dataset ready for BI tools.
 
 # Data Quality Report
 Includes for each column:
