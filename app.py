@@ -108,33 +108,33 @@ def convert_df_to_csv(df):
     return df.to_csv(index=True).encode("utf-8")
 
 st.set_page_config(
-    page_title="Herramienta de Calidad de Datos",
+    page_title="Data Quality Tool",
     layout="wide"
 )
 
-st.title("Analizador de Calidad de Datos")
-st.markdown("Sube tu archivo CSV para obtener un dataset limpio y un reporte de calidad completo.")
+st.title("DATA QUALITY ANALYZER")
+st.markdown("Upload your CSV file to get a cleaned dataset and a full quality report.")
 
-uploaded_file = st.file_uploader("Sube un archivo CSV", type=["csv"])
+uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"])
 
 
 if uploaded_file is not None:
 
     df_original = pd.read_csv(uploaded_file)
-    st.subheader(f"Datos Originales ({len(df_original)} filas)")
+    st.subheader(f"Original Data ({len(df_original)} rows)")
     st.dataframe(df_original.head())
 
-    st.markdown("### Opciones de Limpieza")
+    st.markdown("### Cleaning Options")
 
     remove_unknowns = st.checkbox(
-        "Eliminar valores como 'UNKNOWN', 'N/A', 'na', etc.", 
+        "Remove values such as 'UNKNOWN', 'N/A', 'na', etc.", 
         value=True
     )
 
     custom_values = st.text_input(
-        "Valores adicionales a eliminar (separados por coma)",
+        "Additional values to remove (comma-separated)",
         value="",
-        placeholder="Ej: Sin dato, --, vacío"
+        placeholder="e.g.: No data, --, empty"
     )
 
     if custom_values.strip() != "":
@@ -143,7 +143,7 @@ if uploaded_file is not None:
         custom_values_list = []
 
     st.markdown("---")
-    st.header("Proceso de Limpieza")
+    st.header("Cleaning Process")
 
     df_clean, rows_removed, duplicates_removed = clean_dataframe(
         df_original,
@@ -162,22 +162,22 @@ if uploaded_file is not None:
     col1, col2 = st.columns(2)
 
     with col1:
-        st.subheader("Resumen de Limpieza")
-        st.metric("Filas Originales", len(df_original))
-        st.metric("Duplicados Eliminados", duplicates_removed)
-        st.metric("Filas Eliminadas Totales", rows_removed)
-        st.metric("Filas Finales Limpias", len(df_clean))
+        st.subheader("Cleaning Summary")
+        st.metric("Original Rows", len(df_original))
+        st.metric("Duplicates Removed", duplicates_removed)
+        st.metric("Total Rows Removed", rows_removed)
+        st.metric("Final Clean Rows", len(df_clean))
 
         csv_clean = convert_df_to_csv(df_clean)
         st.download_button(
-            "Descargar Dataset Limpio",
+            "Download Clean Dataset",
             csv_clean,
             file_name="clean_data.csv",
             mime="text/csv"
         )
 
     with col2:
-        st.subheader("Reporte de Calidad")
+        st.subheader("Quality Report")
         st.dataframe(
             report.style.format({
                 "null_%": "{:.2f}%",
@@ -188,12 +188,12 @@ if uploaded_file is not None:
 
         csv_report = convert_df_to_csv(report)
         st.download_button(
-            "Descargar Reporte",
+            "Download Report",
             csv_report,
             file_name="quality_report.csv",
             mime="text/csv"
         )
 
     st.markdown("---")
-    st.header("Dataset Limpio Listo para Tableau")
+    st.header("Clean Dataset Ready")
     st.dataframe(df_clean.head())
